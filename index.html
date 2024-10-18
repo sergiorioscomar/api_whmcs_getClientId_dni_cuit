@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs API GetClient ID/DNI/CUIT de WHMCS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        code {
+            background-color: #e8e8e8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #e8e8e8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .note {
+            background-color: #f9f9e9;
+            border-left: 4px solid #f39c12;
+            padding: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Documentación de la API GetClient ID/DNI/CUIT de WHMCS para obtener datos del cliente</h1>
+
+        <h2>Descripción</h2>
+        <p>Esta API permite obtener la información de un cliente en WHMCS utilizando su ID de cliente o su DNI/CUIT.</p>
+
+        <h2>URL de la API</h2>
+        <code>https://clientes.latincloud.com/includes/api.php</code>
+
+        <h2>Método</h2>
+        <code>POST</code>
+
+        <h2>Parámetros de la solicitud</h2>
+        <p>Los parámetros que deben enviarse en la solicitud son:</p>
+        <ul>
+            <li><strong>action</strong> (obligatorio): Define la acción a ejecutar. En este caso, el valor debe ser <code>"getclientdnicuit"</code>.</li>
+            <li><strong>clientid_dni_cuit</strong> (obligatorio): Uno de estos dos parámetros debe enviarse para buscar al cliente.</li>
+            <li><strong>identifier</strong> (obligatorio): El identificador que autentica la solicitud.</li>
+            <li><strong>secret</strong> (obligatorio): La clave secreta que autentica la solicitud.</li>
+            <li><strong>responsetype</strong> (opcional): Define el formato de la respuesta. El valor debe ser <code>"json"</code>.</li>
+        </ul>
+
+        <h2>Ejemplo de solicitud</h2>
+        <p>Para obtener los datos del cliente utilizando su <strong>clientid_dni_cuit</strong>, la solicitud debe enviarse de la siguiente manera:</p>
+        <pre>
+POST /includes/api.php HTTP/1.1
+Host: clientes.latincloud.com
+Content-Type: application/x-www-form-urlencoded
+
+action=getclientdnicuit&clientid_dni_cuit=27725&identifier=TU_IDENTIFIER&secret=TU_SECRET&responsetype=json
+        </pre>
+
+        <h2>Respuesta de la API</h2>
+        <p>La respuesta de la API será un objeto JSON con la siguiente estructura:</p>
+        <ul>
+            <li><strong>result</strong>: Indica el resultado de la solicitud (<code>success</code> o <code>error</code>).</li>
+            <li><strong>totalresults</strong>: Número de resultados devueltos.</li>
+            <li><strong>clients</strong>: Lista de clientes que coinciden con los parámetros de búsqueda.</li>
+        </ul>
+
+        <h3>Ejemplo de respuesta. </h3>
+        <pre>
+        {
+            "result": "success",
+            "totalresults": 1,
+            "clients": [
+                {
+                    "client_id": 27725,
+                    "firstname": "Sergio",
+                    "lastname": "Rios",
+                    "email": "srios@latincloud.com"
+                }
+            ]
+        }
+        </pre>
+        <p>La busqueda puede ser por id de cliente dni o cuit ingresando como parametro en <code>clientid_dni_cuit</code></p>
+
+
+        <h2>Errores comunes</h2>
+        <ul>
+            <li>Si no se proporciona un <code>clientid_dni_cuit</code>, la API devolverá un error indicando que falta un parámetro requerido.</li>
+            <li>Si la autenticación falla (por un <code>identifier</code> o <code>secret</code> incorrectos), se retornará un error de autenticación.</li>
+        </ul>
+
+        <div class="note">
+            <strong>Notas:</strong><br>
+            Asegúrate de utilizar HTTPS para proteger la comunicación.<br>
+            Los datos de autenticación (<code>identifier</code> y <code>secret</code>) deben mantenerse seguros y no compartirse con terceros no autorizados.<br>
+	        Solicitar que habiliten su IP para poder acceder a las solicitudes GET/POST del api.<br>
+        </div>
+    </div>
+</body>
+</html>
+
